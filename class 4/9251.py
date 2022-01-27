@@ -4,7 +4,6 @@ string_a = ' ' + sys.stdin.readline().rstrip()
 string_b = ' ' + sys.stdin.readline().rstrip()
 dp = [[0] * len(string_b) for _ in range(len(string_a))]
 
-print(dp)
 
 for i in range(1, len(string_a)) :
     for j in range(1, len(string_b)) :
