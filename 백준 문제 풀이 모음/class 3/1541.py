@@ -3,13 +3,15 @@ import sys
 input = sys.stdin.readline().rstrip()
 
 op_list = []
-for i in input :
-    if i == '-' or i == '+' :
-        op_list.append(i)
-        
-print(op_list)
+new_input = ''
+for i in range(len(input)) :
+    if input[i] == '-'  :
+        new_input += ' - '
+    elif input[i] == '+' :
+        new_input += ' + '
+    else :
+        new_input += input[i]
 
-input = input.replace("-", " ").replace("+", " ").split(" ")
-print(input)
-
+new_input = new_input.split(' ')
+print(new_input)
 
