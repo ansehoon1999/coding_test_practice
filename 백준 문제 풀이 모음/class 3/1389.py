@@ -1,9 +1,8 @@
 import sys
-from collections import deque
 
 graph = {}
 N, M = map(int, sys.stdin.readline().split())
-for _ in range(N) :
+for _ in range(M) :
     x, y = map(int, sys.stdin.readline().split())
     if x not in graph :
         graph[x] = [y]
@@ -15,8 +14,15 @@ for _ in range(N) :
     else : 
         graph[y].append(x)
 
+# graph = {
+#     1 : [3, 4],
+#     2 : [3], 
+#     3 : [1,2,4],
+#     4 : [1,3,5],
+#     5 : [4]
+# }
 
-
+from collections import deque
 
 def bfs(graph, start, distances) :
     queue = deque([start])
@@ -43,7 +49,7 @@ for i in range(1, N+1) :
     count = 0
     for x, y in tmp2.items() :
         count += y
-    if min_cost >= count :
+    if min_cost > count :
         min_cost = count
         min_num = i
 print(min_num)
