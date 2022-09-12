@@ -6,19 +6,24 @@ tree =[]
 for _ in range(N) :
     tmp = list(sys.stdin.readline().rstrip())
     tree.append(tmp)
-print(tree)
 
 
-def quad (start1, start2, n) :
+def quad (y, x, n) :
     count = 0
-    for i in range(start1, start1 + n) :
-        for j in range(start2, start2 + n) :
+    for i in range(y, y + n) :
+        for j in range(x, x + n) :
             count += int(tree[i][j])
     
     if count == 0 :
-        return '0'
+        print('0', end='')
     elif count == n * n :
-        return '1'
+        print('1', end='')
     else :
-        quad(0, 0, n/2)
-        quad(0, )            
+        print('(', end="")
+        quad(y, x, n//2)
+        quad(y, x + n//2, n//2)   
+        quad(y + n//2, x, n//2)
+        quad(y + n//2, x + n//2, n//2)          
+        print(')', end="")
+
+quad(0,0,N)
