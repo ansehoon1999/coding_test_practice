@@ -1,32 +1,32 @@
-import sys
+from collections import deque
 
-T = int(sys.stdin.readline())
-
-def fun_R (array) :
-    if len(array) == 0 :
-        return []
-    else :
-        arr = array[::-1]
-        return arr
-
-def fun_D (array) :
-    array.pop(0)
-    return array
-
-
+T = int(input())
 for _ in range(T) :
-    p = list(sys.stdin.readline().rstrip())
-    n = int(sys.stdin.readline())
-    array = sys.stdin.readline().rstrip()
-    
-    count_R = 0
+    p = input()
+    n = int(input())
+    if n :
+        que = deque(input().strip('[]').split(','))
+    else :
+        input()
+        que = deque()
+        
+    rev, flag =0, 0
     for i in range(len(p)) :
         if p[i] == 'R' :
-            
-        
-            count_R += 1
-        
+            rev += 1
+        elif p[i] == 'D' :
+            if len(que) == 0 :
+                flag = 1
+                print('error')
+                break
+            else :
+                if rev %2 == 0 :
+                    que.popleft()
+                else :
+                    que.pop()
+    if flag == 0 :
+        if rev % 2 == 0 :
+            print('[' + ','.join(que) + ']')
         else :
-            array = fun_D(array)
-
-
+            que.reverse()
+            print('[' + ','.join(que) + ']')
