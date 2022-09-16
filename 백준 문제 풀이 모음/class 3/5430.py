@@ -1,44 +1,32 @@
-import sys
+from collections import deque
 
-T = int(sys.stdin.readline())
-
-def fun_R (array) :
-    if len(array) == 0 :
-        return []
-    else :
-        arr = array[::-1]
-    return arr
-
-
-def fun_D (array) :
-    
-    array.pop(0)
-    return array
-
+T = int(input())
 for _ in range(T) :
-    p = list(sys.stdin.readline().rstrip())
-    n = int(sys.stdin.readline())
-    array = sys.stdin.readline().rstrip()
-    if n == 0 :
-        array = []
+    p = input()
+    n = int(input())
+    if n :
+        que = deque(input().strip('[]').split(','))
     else :
-        array = array[1:-1].split(',')
-    
-    for i in p :
-        if i == 'R' :
-            array = fun_R(array)          
-        elif i == 'D' :
-            if n == 0 or len(array) == 0 :
-                array = 'error'
-                
+        input()
+        que = deque()
+        
+    rev, flag =0, 0
+    for i in range(len(p)) :
+        if p[i] == 'R' :
+            rev += 1
+        elif p[i] == 'D' :
+            if len(que) == 0 :
+                flag = 1
+                print('error')
                 break
             else :
-                array = fun_D(array)
-
-    if array == 'error' :
-        print('error')
-    else :
-        result = []
-        for i in array :
-            result.append(int(i))
-        print(result)
+                if rev %2 == 0 :
+                    que.popleft()
+                else :
+                    que.pop()
+    if flag == 0 :
+        if rev % 2 == 0 :
+            print('[' + ','.join(que) + ']')
+        else :
+            que.reverse()
+            print('[' + ','.join(que) + ']')
