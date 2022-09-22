@@ -8,12 +8,6 @@ for i in range(n) :
     tmp = list(map(int, sys.stdin.readline().split()))
     graph.append(tmp)
 
-print('------------------------')
-for i in range(n) :
-    for j in range(m) :
-        print(graph[i][j], end = ' ')
-    print()
-print('------------------------')
 
 from collections import deque
 
@@ -33,17 +27,7 @@ def bfs(a, b, cost) :
     count = 0
     
     while queue :
-        print('------------------------')
-        for i in range(n) :
-            for j in range(m) :
-                print(visited[i][j], end = ' ')
-            print()
-        print('------------------------')
-        print('count: ', count)
-        print('queue: ', queue)
-        print('------------------------')
 
-       
 
         node = queue.popleft()
         if count == 3 :
@@ -51,15 +35,15 @@ def bfs(a, b, cost) :
             for maxmax in node :
                 taa.append(maxmax[2])
             
+            result =  graph[a][b]
+
             return max(taa)
             break
-        print('node: ', node)
 
         count_list = []
         for z in range(len(node)) :
             x, y, costcost = node[z][0], node[z][1], node[z][2]
             visited[x][y] = True
-            print('x, y, costcost: ', x, y, costcost)
             for i in range(4) :
                 ax = dx[i] + x
                 ay = dy[i] + y
@@ -78,10 +62,43 @@ def bfs(a, b, cost) :
         count += 1
 
 
+def block(r, c, total) :
+    make_block = 0
+    dr = [-1, 0, 1, 0]
+    dc = [0, 1, 0, -1]
+
+    block_list = []
+    for i in range(4) :
+        nr = r +dr[i]
+        nc = c +dc[i]
+        if 0 <= nr < n and 0 <= nc < m :
+            make_block += 1
+            total += graph[nr][nc]
+        if make_block == 3 :
+            block_list.append(total)
+            total -= graph[nr][nc]
+        if make_block == 4:
+            for i in range(4) :
+                nr = r + dr[i]
+                nc = c + dc[i]
+                
+                block_list.append(total)
+
+    
+    if len(block_list)== 0 :
+        return 0
+    else :
+        return max(block_list)
+
+
 cost = []
 for i in range(n) :
     for j in range(m) :
         tmp = bfs(i, j, graph[i][j])
-        cost.append(tmp)
+        total = block(i, j, graph[i][j])
+        
+        cost.append(max([tmp, total]))
+
+
 
 print(max(cost))
