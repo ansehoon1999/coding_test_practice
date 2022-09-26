@@ -1,42 +1,42 @@
-
 import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**9)
 
-n = int(sys.stdin.readline())
-sys.setrecursionlimit(10 ** 9)
+n = int(input())
 
-graph = [[] for _ in range(n+1)]
-state = []
+adj = []
+for i in range(n+1) :
+    adj.append([])
 
-def dfs(x, wei) :
-    for i in graph[x] :
-        a, b = i
-        if distance[a] == -1 and state[a] == False :
-            state[a] = True
-            distance[a] == wei+b
-            dfs(a, wei+b)
-
-            
 
 for i in range(n) :
-    state.append(False)
-    tmp = list(map(int, sys.stdin.readline().split()))
-    criterion = tmp[0]
+    tmp = list(map(int, input().split()))
 
-    for j in range(1, len(tmp)-1, 2) :
-        graph[criterion].append([tmp[j], tmp[j+1]])
+    for j in range(1, len(tmp)-1,2) :
+        adj[tmp[0]].append((tmp[j], tmp[j+1]))
 
+def dfs(x, result) :
 
-distance = [-1] * (n + 1)
-distance[1] = 0
-state[1] = True
+    for a, b in adj[x] :
+        if result[a] == -1 :
+            result[a] = result[x] + b
+            dfs(a, result)
 
-dfs(1, 0)
+result1 = [-1] *(n+1)
+result1[1] = 0
+dfs(1, result1)
 
-print(graph)
+temp = 0
+index = 0
 
+for i in range(1, len(result1)) :
+    if temp < result1[i] :
+        temp = result1[i]
+        index= i
 
+result2 = [-1] * (n+1)
+result2[index] = 0
+dfs(index, result2)
 
+print(max(result2))
 
-
-
-    
