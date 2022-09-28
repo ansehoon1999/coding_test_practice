@@ -1,21 +1,33 @@
 import sys
 input = sys.stdin.readline
 
+
+
+def dfs (idx) :
+    global tmp
+    global visited
+
+
+
+    if idx == m :
+        answer.add(tuple(sorted(tmp)))
+        return
+
+    for i in range(n):
+
+        tmp.append(arr[i])
+                        
+        dfs(idx + 1)
+        tmp.pop()
+
 n, m = map(int, input().split())
-
-tmp = list(map(int, input().split()))
-tmp = sorted(list(set(tmp)))
+arr = sorted(list(map(int, input().split())))
 
 
-from itertools import product
+tmp = []
+answer = set()
 
-li = []
-for per in product(tmp, repeat = m) :
-    per = sorted(per)
-    if per not in li :
-        li.append(per)
-    
-        per = str(per).replace(']', '').replace('[', '').replace(',', '')
-        print(per)
+dfs(0)
 
-    
+for i in sorted(answer):
+    print(*i)
