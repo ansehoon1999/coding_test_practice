@@ -52,20 +52,24 @@ INF = sys.maxsize
 input = sys.stdin.readline
 
 def dijkstra(start_node) :
-    distance = [INF] * (N+1)
-    heap = []
-    heapq.heappush(heap, [0, start_node])
-    distance [start_node] = 0
+  distance = [INF] * (N+1)
+  heap = []
+  heapq.heappush(heap, [0, start_node])
+  distance[start_node] = 0
 
-    while heap :
-        now_cost, node = heapq.heappop(heap)
-        for next_cost, next_node in graph[node] :
-            next_cost = next_cost + now_cost
+  while heap :
+    now_cost, node = heapq.heappop(heap)
+    for next_cost, next_node in graph[node] :
+        next_cost = next_cost + now_cost
 
-            if next_cost < distance[next_node] :
-                distance[next_node] = next_cost
-                heapq.heappush(heap, [next_cost, next_node])
+        if next_cost < distance[next_node] :
+            distance[next_node] = next_cost
+            heapq.heappush(heap, [next_cost, next_node])
+
     return distance
+
+
+
 
 N, M, X = map(int, input().split())
 
