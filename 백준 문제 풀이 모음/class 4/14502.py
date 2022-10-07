@@ -1,18 +1,20 @@
-import sys
-import copy
+import sys, copy
 from collections import deque
+
 input = sys.stdin.readline
+
+dx = [1, -1, 0, 0]
+dy = [0, 0, 1, -1]
 
 
 def bfs() :
     queue = deque()
     tmp_graph = copy.deepcopy(graph)
-    
+
     for i in range(n) :
         for j in range(m) :
             if tmp_graph[i][j] == 2 :
                 queue.append((i, j))
-
     while queue :
         x, y = queue.popleft()
 
@@ -20,17 +22,18 @@ def bfs() :
             nx = x + dx[i]
             ny = y + dy[i]
 
-            if nx < 0  or nx >= n or ny < 0 or ny >= m :
+            if nx < 0 or nx >= n or ny < 0 or ny >= m :
                 continue
-        
-            if tmp_graph[nx][ny] == 0 :
-                tmp_graph[nx][ny] = 2 
-                queue.append((nx, ny))
 
+            if tmp_graph[nx][ny] == 0 :
+                tmp_graph[nx][ny] = 2
+                queue.append((nx, ny))
+    
     global answer
     cnt = 0
-    for i in range(n) :
+    for i in range(n):
         cnt += tmp_graph[i].count(0)
+    
     answer = max(answer, cnt)
 
 def makeWall(cnt) :
@@ -39,20 +42,15 @@ def makeWall(cnt) :
         return
 
     for i in range(n) :
-        for j in range(m):
+        for j in range(m) :
             if graph[i][j] == 0 :
                 graph[i][j] = 1
-                makeWall(cnt + 1)
+                makeWall(cnt+1)
                 graph[i][j] = 0
 
-
 n, m = map(int, input().split())
-
-dx = [1, -1, 0, 0]
-dy = [0, 0, 1, -1]
-
 graph = []
-for _ in range(n) :
+for i in range(n):
     graph.append(list(map(int, input().split())))
 
 answer = 0
