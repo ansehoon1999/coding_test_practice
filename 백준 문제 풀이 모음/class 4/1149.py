@@ -14,7 +14,7 @@ for i in range(n) :
     result[0] = x1
     result[1] = x2
     result[2] = x3
-
+    print(result)
 
 print(min(result))
 
