@@ -13,10 +13,6 @@ edge.sort(key = lambda x : x[0])
 parent = list(range(V+1))
 sum = 0
 
-edge.sort(key = lambda x : x[0])
-parent = list(range(V+1))
-sum = 0
-
 def union(a, b) :
     a = find(a)
     b = find(b)
