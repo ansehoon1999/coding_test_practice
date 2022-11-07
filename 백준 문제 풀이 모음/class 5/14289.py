@@ -1,35 +1,47 @@
 import sys
+
 input = sys.stdin.readline
 MOD = 1000000007
 
-mm = {}
-n, m = map(int, input().split())
-mm[1] = []
-for i in range(n) :
-    tmp = [0] * n
-    mm[1].append(tmp)
 
-for i in range(m) :
-    frm, to = map(int, input().split())
-    mm[1][frm-1][to-1] = 1
+def multiply_matrix(matrix1, matrix2):
+    return [[sum(matrix1[i][k]*matrix2[k][j] % MOD for k in range(n)) % MOD
+             for j in range(n)] for i in range(n)]
 
-num = int(input())
 
-print(mm)
-def f (d, frm, to) :
-    if d <= 1 :
-        return mm[d][frm][to]
+def solution(D):
+    # DP 초기화
+    dp1 = [[0]*n for _ in range(n)]
+    for k, v in graph.items():
+        for adj in v:
+            dp1[k][adj] = 1
 
-    mm.setdefault(d, [[0 for _ in range(n)] for _ in range(n)])
-    if mm[d][frm][to] :
-        return mm[d][frm][to]
-    
-    half = d // 2
-    other = half + 1 if d % 2 else half
+    dp2 = [[0]*n for _ in range(n)]
+    for i in range(n):
+        dp2[i][i] = 1
 
-    for k in range(n) :
-        mm[d][frm][to] += f (half, frm, k) * f(other, k, to)
-        mm[d][frm][to] %= MOD
+    # 행렬 제곱
+    while D > 0:
+        if D % 2 == 1:
+            dp2 = multiply_matrix(dp1, dp2)
+            D -= 1
+        dp1 = multiply_matrix(dp1, dp1)
+        D //= 2
 
-    return mm[d][frm][to]
-print(f(num, 0, 0))
+    return dp2[0][0]
+
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+
+    graph = {i: [] for i in range(n)}
+    for _ in range(m):
+        a, b = map(int, input().split())
+        a -= 1
+        b -= 1
+        graph[a].append(b)
+        graph[b].append(a)
+
+    D = int(input())
+
+    print(solution(D))
