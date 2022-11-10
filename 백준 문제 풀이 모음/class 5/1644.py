@@ -19,26 +19,3 @@ for i in range(len(primes)-1) :
         count[total] += 1       
 print(count[-1])
 
-# for i in range(n+1) :
-#     key = i
-#     total = key
-#     tmp = []
-#     if primes[i] == 1 :
-#         while True :
-#             if i == n :
-#                 break
-#             i += 1
-#             if primes[i] == 1 :
-#                 total += i
-#                 if total >= n :
-#                     break
-#                 count[total] += 1
-#                 tmp.append(total)
-#         print(key, tmp)
-#     else :
-#         continue
-        
-# # for i in range(len(count)) :
-# #     print(i, count[i])
-
-# # print(count[-1])
