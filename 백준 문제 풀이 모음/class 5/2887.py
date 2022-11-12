@@ -1,15 +1,32 @@
 import sys
 input = sys.stdin.readline
-N = int(input())
 
+n = int(input())
+
+planet = []
+for i in range(n) :
+    x, y, z = list(map(int, input().split()))
+    planet.append((x, y, z, i))
+
+edges = []
+for i in range(3) :
+    planet.sort(key = lambda x: x[i])
+    for j in range(1, n) :
+        edges.append((abs(planet[j-1][i] - planet[j][i]), planet[j-1][3], planet[j][3]))
+
+edges.sort()
+
+
+parents = list(range(n))
 def union(a, b) :
     a = find(a)
-    b = find(b) 
+    b = find(b)
 
     if a < b :
         parents[b] = a
     else :
         parents[a] = b
+
 
 def find(x) :
     if x == parents[x] :
@@ -18,35 +35,11 @@ def find(x) :
     parents[x] = find(parents[x])
     return parents[x]
 
-
-planet = []
-
-for i in range(N) :
-    x, y, z = list(map(int, input().split()))
-    planet.append([x, y, z, i])
-
-# print(planet)
-
-edge = []
-for j in range(3) :
-    planet.sort(key = lambda x : x[j])
-    for i in range(1, N) :
-        edge.append((abs(planet[i-1][j] - planet[i][j]), planet[i-1][3], planet[i][3]))
-    # print(edge)
-
-edge.sort()
-parents = list(range(N))
-# print(parents)
-
-
-
-
 result = 0
-for cost, x, y in edge :
-    # print(cost, (x, y))
 
+for cost, x, y in edges :
     if find(x) != find(y) :
         union(x, y)
-        result += cost
+        result+= cost
 
 print(result)
