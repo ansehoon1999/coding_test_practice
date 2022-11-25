@@ -8,6 +8,7 @@ fun main () = with(System.`in`.bufferedReader()) {
     val k = str.nextToken().toInt()
     val n = str.nextToken().toInt()
 
+
     val list = mutableListOf<Long>()
     var high :Long = -1
 
