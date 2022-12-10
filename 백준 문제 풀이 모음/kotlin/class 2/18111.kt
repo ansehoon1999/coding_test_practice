@@ -1,6 +1,4 @@
-import java.io.BufferedWriter
-import java.io.OutputStreamWriter
-import java.util.StringTokenizer
+
 
 fun main() = with(System.`in`.bufferedReader()) {
     val str = readLine().split(' ').toList()
@@ -8,68 +6,54 @@ fun main() = with(System.`in`.bufferedReader()) {
     val m = str[1].toInt()
     val b = str[2].toInt()
 
-    val arr = Array(n) { Array<Int>(m) {0} }
-
-    var max_height = -1
-    var min_height = 257
+    val matrix = Array (n) {Array<Int>(m) {0} }
 
     for (i in 0 until n) {
-        val st = StringTokenizer(readLine(), " ")
+        val input = readLine().split(' ').toList()
         for (j in 0 until m) {
-            arr[i][j] = st.nextToken().toInt()
-            max_height = Math.max(max_height, arr[i][j])
-            min_height = Math.min(min_height, arr[i][j])
+            matrix[i][j] = input[j].toInt()
         }
     }
 
-//    println(max_height)
-//    println(min_height)
-
-    var mintime = 1000000000
-    var minheight = 0
-    for (i in 0 .. 256) {
-        var minus = 0
-        var plus = 0
-        arr.forEach {
-            it.forEach {
-                if (it - i > 0) {
-                    minus += (it - i)
-                } else if (it - i < 0){
-                    plus += (i - it)
+    var min = 1000000000
+    var floor = 0
+    for (k in 0 until 257) {
+        var take = 0
+        var put = 0
+        for (i in 0 until n) {
+            for (j in 0 until m) {
+                if (matrix[i][j] -  k > 0) {
+                    take += matrix[i][j] -  k
+                } else if (matrix[i][j] -  k < 0) {
+                    put +=  k - matrix[i][j]
                 }
             }
         }
 
-        if (plus > minus + b) {
+        if (put > take + b) {
             continue
         }
 
-
-        if (mintime >= minus * 2 + plus ) {
-            mintime = minus * 2 + plus
-            minheight = i
+        if (min >= 2 * take + put) {
+            min = 2 * take + put
+            floor = k
         }
-
-
-
-//        println(minus)
-//        println(plus)
-
     }
+    val sb = StringBuilder()
 
-//    arr.forEach {
+    sb.append(min)
+    sb.append(' ')
+    sb.append(floor)
+    print(sb)
+//
+//    matrix.forEach {
 //        it.forEach {
-//            print(it)
+//            sb.append(it)
+//            sb.append(' ')
 //        }
-//        println()
+//        sb.append('\n')
 //    }
-
-    val bw = BufferedWriter(OutputStreamWriter(System.out))
-    bw.write("${mintime} ${minheight}")
-    bw.flush()
-    bw.close()
-//    println(mintime)
-//    println(minheight)
-
+//
+//    print(sb)
 
 }
