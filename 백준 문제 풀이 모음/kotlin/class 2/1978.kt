@@ -2,23 +2,23 @@ import java.util.StringTokenizer
 
 fun main() = with(System.`in`.bufferedReader()) {
     val n = readLine().toInt()
-    val list : MutableList<Boolean> = MutableList(1001) {true}
-    list[0] = false
-    list[1] = false
+    val list = readLine().split(' ').toList()
 
-    for (i in 2 .. 1000) {
-        if (list[i]) {
-            for ( j in (2 * i) .. 1000 step i) {
-                list[j] = false
-            }
+    val arr = Array<Boolean>(1001) {false}
+    arr[0] = true
+    arr[1] = true
+
+    for (i in 2.. (Math.sqrt(1001.toDouble())).toInt()) {
+        if (arr[i]) continue
+
+        for (j in i*i until 1001 step i) {
+            arr[j] = true
         }
     }
 
-//    println(list)
-    val str = StringTokenizer(readLine())
-    var cnt = 0
-    for (i in 0 until n) {
-        if(list[str.nextToken().toInt()]) cnt ++
+    var sum = 0
+    list.forEach {
+        if (!arr[it.toInt()]) sum ++
     }
-    println(cnt)
+    print(sum)
 }
