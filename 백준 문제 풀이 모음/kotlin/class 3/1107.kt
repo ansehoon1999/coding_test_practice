@@ -8,7 +8,7 @@ fun main () = with(System.`in`.bufferedReader()) {
 
     val count = readLine().toInt()
     if (count == 0) {
-        print(n.toString().toCharArray().size)
+        print(Math.min(n.toString().toCharArray().size, Math.abs(n-100)))
     } else {
     val noBtn = readLine().split(' ').toList()
 
@@ -22,7 +22,7 @@ fun main () = with(System.`in`.bufferedReader()) {
 //        dubPermutation(i)
 //    }
 
-        for (i in 1..7) {
+        for (i in 1..6) {
             dubPermutation(0, i)
         }
 
