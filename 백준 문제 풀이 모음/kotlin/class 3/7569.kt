@@ -6,7 +6,7 @@ var matrix = MutableList<MutableList<MutableList<Int>>>(0) { MutableList(0) { Mu
 var dr = listOf<Int>(1,-1,0,0,0,0)
 var dc = listOf<Int>(0,0,1,-1,0,0)
 var dh = listOf<Int>(0,0,0,0,1,-1)
-
+//
 
 
 var count = 0
