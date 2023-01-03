@@ -13,6 +13,8 @@ fun main() = with(System.`in`.bufferedReader()){
         matrix.add(Pair(input[0], input[1]))
     }
 
+    
+
     for (i in 1 until n) {
         for (j in 0 until n - i) {
             if (i == 1) {
