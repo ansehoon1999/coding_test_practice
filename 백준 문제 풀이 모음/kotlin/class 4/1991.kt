@@ -1,7 +1,7 @@
 
 
-data class TreeNode <T>(
-    var data : T,
+data class TreeNode <T> (
+    var data : String,
     var left : TreeNode<T>? = null,
     var right : TreeNode<T>? = null
 )
@@ -11,18 +11,18 @@ class Tree {
 
     fun add (data : String, left : String, right : String) {
         if (root == null) {
-            if ( data != ".") root = TreeNode(data)
-            if ( left != ".") root!!.left = TreeNode(left)
-            if ( right != ".") root!!.right = TreeNode(right)
+            if (data != ".") root = TreeNode(data)
+            if (left != ".") root!!.left = TreeNode(left)
+            if (right != ".") root!!.right = TreeNode(right)
         } else {
-            search(root!!, data, left, right)
+            search (root!!, data, left, right)
         }
     }
 
-    fun search ( root : TreeNode<String>, data: String, left : String, right:String) {
-        if ( root.data == data) {
-            if (left != ".") root!!.left = TreeNode(left)
-            if (right != ".") root!!.right = TreeNode(right)
+    fun search (root : TreeNode<String>, data : String, left : String, right : String) {
+        if (root.data == data) {
+            if (left != ".") root.left = TreeNode(left)
+            if (right != ".") root.right = TreeNode(right)
         } else {
             if (root.left != null) search(root.left!!, data, left, right)
             if (root.right != null) search(root.right!!, data, left, right)
@@ -31,11 +31,11 @@ class Tree {
 
     fun preOrder(root : TreeNode<String>) {
         print(root.data)
-        if (root.left != null) preOrder(root.left!!)
+        if (root!!.left != null) preOrder(root.left!!)
         if (root.right != null) preOrder(root.right!!)
     }
 
-    fun inOrder(root: TreeNode<String>) {
+    fun inOrder(root : TreeNode<String>) {
         if (root.left != null) inOrder(root.left!!)
         print(root.data)
         if (root.right != null) inOrder(root.right!!)
@@ -43,19 +43,19 @@ class Tree {
 
     fun postOrder(root : TreeNode<String>) {
         if (root.left != null) postOrder(root.left!!)
-        if (root.right != null) postOrder(root.right!!)
+        if (root.right != null) postOrder (root.right!!)
         print(root.data)
     }
-
 }
 
-fun main() = with(System.`in`.bufferedReader()){
-    val n = readLine().toInt() // node count
+fun main() {
 
     val tree = Tree()
 
+    val sb = System.`in`.bufferedReader()
+    val n = sb.readLine().toInt()
     repeat(n) {
-        val (a,b,c) = readLine().split(' ')
+        val (a,b,c) = sb.readLine().split(' ')
         tree.add(a, b, c)
     }
 
@@ -64,5 +64,7 @@ fun main() = with(System.`in`.bufferedReader()){
     tree.inOrder(tree.root!!)
     println()
     tree.postOrder(tree.root!!)
+
+
 
 }
