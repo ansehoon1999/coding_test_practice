@@ -1,58 +1,44 @@
-
-
-
-
-fun main() {
-    val cap = 4
-    val n = 5
-    val deliveries = intArrayOf(1, 0, 3, 1, 2)
-    val pickups = intArrayOf(0, 3, 0, 4, 0)
-    deliveries.size
-
-    var cur = n - 1 // 4
-    //4
-    var result : Long = 0
-    var dis : Long = (n - 1).toLong()
-    while (dis != -1L) {
-        var count = cap
-        var end = 0
-        for (i in dis downTo 0) {
-            if (deliveries[i.toInt()] > count) {
-                deliveries[i.toInt()] -= count
-                count = 0
-            } else {
-                count -= deliveries[i.toInt()]
-                deliveries[i.toInt()] = 0
+class Solution {
+    fun solution(cap: Int, n: Int, deliveries: IntArray, pickups: IntArray): Long {
+        var answer: Long = 0
+        var toGo = checkToGo(deliveries.size - 1, deliveries, pickups)
+        while (toGo >=0) {
+            var cap1 = cap
+            var cap2 = cap
+            for (i in toGo downTo(0)) {
+                if (deliveries[i] <= cap1) {
+                    cap1 -= deliveries[i]
+                    deliveries[i] = 0
+                } else {
+                    deliveries[i] -= cap1
+                    cap1 = 0
+                    break
+                }
             }
-
-            if (count == 0) break
-        }
-
-        for (i in dis downTo 0) {
-            val store = cap - end
-
-            if (store > pickups[i.toInt()]) {
-                end += pickups[i.toInt()]
-                pickups[i.toInt()] = 0
-            } else {
-                pickups[i.toInt()] -= store
-                end = cap
+            for (i in toGo downTo(0)) {
+                if (pickups[i] <= cap2) {
+                    cap2 -= pickups[i]
+                    pickups[i] = 0
+                } else {
+                    pickups[i] -= cap2
+                    cap2 = 0
+                    break
+                }
             }
-
-            if (end == cap) break
+            answer += (toGo + 1) * 2
+            toGo = checkToGo(toGo, deliveries, pickups)
         }
 
-        if (!(count == cap) && !(end == 0)) {
-            result += (dis + 1) * 2
-        }
-
-        for (i in dis downTo 0) {
-            if (deliveries[i.toInt()] == 0 && pickups[i.toInt()] == 0) dis--
-            else break
-        }
+        return answer
     }
 
-    println(result)
+    fun checkToGo(lastIndex: Int, d: IntArray, p: IntArray) : Int {
+        for (i in lastIndex downTo(0)) {
+            if (d[i] != 0 || p[i] != 0) {
+                return i
+            }
+        }
+        return -1
+    }
 
 }
-
