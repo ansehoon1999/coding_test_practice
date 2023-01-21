@@ -10,6 +10,7 @@ class Solution {
         }
 
 
+
         var min = 100000000
         var max = -100000000
         var cost = -100000000
