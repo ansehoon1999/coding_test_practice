@@ -1,54 +1,57 @@
 class Solution {
-    val dr = listOf(1, -1, 0, 0)
-    val dc = listOf(0, 0, 1, -1)
+    val ar = listOf(1, -1, 0, 0)
+    val ac = listOf(0, 0, 1, -1)
     
+    var state = false 
     fun exist(board: Array<CharArray>, word: String): Boolean {
-        val m = board.size
-        val n = board[0].size
-        
-        var state = false
+        val row = board.size
+        val col = board[0].size
 
-        fun dfs(count : Int, point : Pair<Int, Int>, visited : MutableList<MutableList<Boolean>>) {
+        val visited = MutableList<MutableList<Boolean>>(row) { MutableList<Boolean>(col) { false }}
+        fun dfs(count : Int, r : Int, c : Int) {
+            // visited.forEach {
+            //     println(it)
+            // }
+            // println()
 
-            if (count == word.length) {
+            if (count == word.length-1) {
                 state = true
                 return
-            } else {
+            }
 
-                for (i in 0 until 4) {
-                    val row = point.first + dr[i]
-                    val col = point.second + dc[i]
+            
 
-                    if (row < 0 || row >= m || col < 0 || col >= n) continue
+            for (i in 0 until 4) {
+                val dr = r + ar[i]
+                val dc = c + ac[i]
 
-                    if (board[row][col] == word[count] && !visited[row][col]) {
-                        visited[row][col] = true
-                        dfs(count + 1, Pair(row, col), visited)
-                        visited[row][col] = false
-                    }
+                if (dr < 0 || dr >= row || dc < 0 || dc >= col) continue
+                if (visited[dr][dc]) continue
+                
+                if (word[count+1] == board[dr][dc]) {
+                    visited[dr][dc] = true
+                    dfs(count+1, dr, dc)
+                    visited[dr][dc] = false
                 }
+            }
 
+            
+        }
+
+
+        for (i in 0 until row) {
+            for (j in 0 until col) {
+                if (board[i][j] == word[0]) {
+                    visited[i][j] = true
+                    dfs(0, i, j)             
+                    visited[i][j] = false
+                }
             }
         }
 
-        val first = mutableListOf<Pair<Int, Int>>()
-        for (i in 0 until m) {
-            for (j in 0 until n) {
-                if (word[0] == board[i][j]) {
-                    first.add(Pair(i, j))
-                }
-            }
-        }
 
-        var visited = MutableList<MutableList<Boolean>>(m) { MutableList<Boolean>(n) { false} }
-        first.forEach {
-            visited[it.first][it.second] = true
-            dfs(1, it, visited)
-            visited[it.first][it.second] = false
-        }
 
-        println(first)
+
         return state
-
     }
 }
