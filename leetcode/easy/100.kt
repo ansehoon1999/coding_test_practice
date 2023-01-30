@@ -10,27 +10,13 @@
  */
 class Solution {
     fun isSameTree(p: TreeNode?, q: TreeNode?): Boolean {
+        if (p == null && q == null) return true
+        else if (p == null && q != null) return false
+        else if (p != null && q == null) return false
         
-        var state = true
-        fun same (p : TreeNode?, q : TreeNode?) {
-            if (p == null && q == null) return
-            
-            val pValue = p?.`val` ?: 1000000
-            val qValue = q?.`val` ?: 1000000
-            
-            // println("pValue ${pValue} qValue ${qValue}")
+        if (p?.`val` != q?.`val`) return false
 
-            if (pValue != qValue) {
-                state = false
-                return 
-            }
+        return isSameTree(p?.left, q?.left) && isSameTree(p?.right, q?.right)
 
-            same(p?.left, q?.left)
-            same(p?.right, q?.right)
-        }
-        
-        same(p, q)
-
-        return state
     }
 }
