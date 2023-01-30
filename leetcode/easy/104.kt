@@ -1,55 +1,25 @@
 /**
  * Example:
- * var li = ListNode(5)
- * var v = li.`val`
- * Definition for singly-linked list.
- * class ListNode(var `val`: Int) {
- *     var next: ListNode? = null
+ * var ti = TreeNode(5)
+ * var v = ti.`val`
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
  * }
  */
 class Solution {
-    fun mergeTwoLists(list1: ListNode?, list2: ListNode?): ListNode? {
-        if (list1 == null && list2 == null) return null
-        else if (list1 == null) return list2
-        else if (list2 == null) return list1
+    fun maxDepth(root: TreeNode?, count : Int = 0): Int {
+        if (root == null) return count
+        else {
 
-        var next1 = list1
-        var next2 = list2
-        var first = -1
-        if (next1!!.`val` < next2!!.`val`) {
-            first = next1?.`val`
-            next1 = next1.next
-        } else {
-            first = next2?.`val`
-            next2 = next2.next
+            val x = maxDepth(root?.left, count+1)
+            val y = maxDepth(root?.right, count+1)
+
+            return maxOf(x, y)
         }
 
-        var next3  = ListNode(first)
-        var list3Start = next3
-
-        while (next1 != null || next2 != null) {
-            if(next1== null){
-                next3.next = next2
-                break
-            }
-            if(next2== null){
-                next3.next = next1
-                break
-            }
-            
-            if (next1!!.`val` < next2!!.`val`) {
-                next3.next = ListNode(next1?.`val`)
-                next3 = next3.next
-                next1 = next1.next 
-            } else {                    
-                next3.next = ListNode(next2?.`val`)
-                next3 = next3.next
-                next2 = next2.next
-                
-            }
-
-        }
-
-        return list3Start
+        
+        
     }
 }
