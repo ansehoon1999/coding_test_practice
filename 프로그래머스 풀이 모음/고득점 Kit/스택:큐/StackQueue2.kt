@@ -1,48 +1,42 @@
 class Solution {
-    val map = HashMap<String, MutableList<Int>>()
-    fun solution(fees: IntArray, records: Array<String>): IntArray {
-        val baseTime = fees[0]
-        val baseMoney = fees[1]
-        val unitTime = fees[2]
-        val unitMoney = fees[3]
-        
-        for (i in 0 until records.size) {
-            val (time, carNum, state) = records[i].split(' ')
-            val timeSum = time.split(':')
-            
-            if (map[carNum] == null) map.put(carNum, mutableListOf<Int>()) 
-            
-            if (state == "IN") {
-                map[carNum]!!.add ((-1) * ((timeSum[0].toInt() * 60) + timeSum[1].toInt()))
-            } else if (state == "OUT") {
-                map[carNum]!!.add ((timeSum[0].toInt() * 60) + timeSum[1].toInt())             
+    fun solution(progresses: IntArray, speeds: IntArray): IntArray {
+        var answer = ArrayList<Int>()
+
+        val total = progresses.size
+        val state = MutableList<Int>(total) { 0 }
+
+        for (i in 0 until total) {
+            val divide = (100 - progresses[i]) / speeds[i]
+            val remain = (100 - progresses[i]) % speeds[i]
+            println("${divide} ${remain}")
+
+            if (remain > 0) {
+                state[i] = divide + 1
+            } else {
+                state[i] = divide
             }
         }
-        
-        println(map)
-        var answer: IntArray = IntArray(map.size)
-        var idx = 0
-        map.toSortedMap().forEach { (carNum, addedTime) ->
-            
-            var sum = 0
-            for (i in 0 until addedTime.size) {
-                sum += addedTime[i]
+
+        for(i in 0 until total) {
+            var count = 1
+            val current = state[i]
+
+            if (current == - 1) continue
+
+            for(j in i+1 until total) {
+                if (current >= state[j]) {
+                    state[j] = -1
+                    count ++
+                } else {
+                    break
+                }
             }
-            
-            if (sum <= 0) sum += 1439
-            
-            if (sum <= baseTime) answer[idx] = baseMoney
-            else {
-                // println("${baseMoney} ${((sum-baseTime)/unitTime).toDouble()} ${unitMoney}")
-                 answer[idx] = (baseMoney + Math.ceil(((sum-baseTime).toDouble()/unitTime).toDouble()) * unitMoney).toInt()
-            }
-             
-            // println(answer.toList())            
-            idx ++
+
+            answer.add(count)
+
         }
-        
-        
-        
-        return answer
+
+        return answer.toIntArray()
     }
+}
 }
