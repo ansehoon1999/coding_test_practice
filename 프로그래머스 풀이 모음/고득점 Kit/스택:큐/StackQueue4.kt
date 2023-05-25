@@ -1,48 +1,47 @@
 import java.util.*
 
-fun main(args: Array<String>) {
+class Solution {
+    fun solution(priorities: IntArray, location: Int): Int {
+        val size = priorities.size
 
-    var answer = 0
+        val deque = ArrayDeque<Int>()
+        deque.addAll(priorities.toList())
 
-    val priorities = intArrayOf(2, 1, 3, 2)
-    val size = priorities.size
+        val currentList = MutableList<Int>(size) { 0 }
+        currentList[location] = 1
 
-    val location = 2
-    val targetNum = priorities[location] // 3
+        val currentDeque = ArrayDeque<Int>()
+        currentDeque.addAll(currentList)
 
-    val deque = ArrayDeque<Int>()
-    deque.addAll(priorities.toList())
+        var count = 1
 
-    val currentList = MutableList<Int>(size) { 0 }
-    currentList[location] = 1
+        while(true) {
 
-    val currentDeque = ArrayDeque<Int>()
-    currentDeque.addAll(currentList)
+            val maxIndex = deque.indexOf(deque.maxOf { it })
 
-    var count = 0
+            for(i in 0 until maxIndex) {
+                val first = deque.removeFirst()
+                deque.addLast(first)
 
-    while(true) {
+                val cur = currentDeque.removeFirst()
+                currentDeque.addLast(cur)
+            }
+            //        println(deque)
+            //        println("${priorities[0]} ${targetNum}")
 
-        val maxIndex = priorities.indexOf(priorities.maxOf { it })
+            if (currentDeque.first == 1) {
+                // println(count)
+                break
+            } else {
+                deque.removeFirst()
+                currentDeque.removeFirst()
 
-        for(i in 0 until maxIndex) {
-            val first = deque.removeFirst()
-            deque.addLast(first)
-
-            val cur = currentDeque.removeFirst()
-            currentDeque.addLast(cur)
+                count ++
+            }
         }
-//        println("deque: " + deque)
-//        println("current: " + currentDeque)
-        println("${priorities[0]} ${targetNum}")
 
-        if (currentDeque.first == 1) {
-            println(count)
-            break
-        } else {
-            deque.removeFirst()
-            currentDeque.removeFirst()
-            count ++
-        }
+
+
+        return count
     }
 }
