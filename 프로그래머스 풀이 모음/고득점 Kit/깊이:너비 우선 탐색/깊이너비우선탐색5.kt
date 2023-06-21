@@ -1,56 +1,54 @@
-class Solution {
+import java.util.*
 
-    lateinit var hashMap: HashMap<String, ArrayDeque<String>>
-    lateinit var result: MutableList<String>
+class Solution {
+    lateinit var Tickets: Array<Array<String>>
+    lateinit var visited: MutableList<Boolean>
+
+    var TicketSize = 0
+    lateinit var result: MutableList<MutableList<String>>
 
     fun solution(tickets: Array<Array<String>>): Array<String> {
 
-        hashMap = hashMapOf()
-        val ticketSize = tickets.size
+        Tickets = tickets
+        TicketSize = Tickets.size
+        result = mutableListOf()
 
-        for(i in 0 until ticketSize) {
-            val start = tickets[i][0]
-            val end = tickets[i][1]
+        visited = MutableList<Boolean>(TicketSize) { false }
 
-            if(hashMap[start] == null) {
-                hashMap[start] = ArrayDeque()
-            }
-            hashMap[start]!!.add(end)
-        }
-
-        hashMap.forEach {
-            it.value.sort()
-        }
-
-        dfs("ICN", listOf("ICN"))
-
-        return result.toTypedArray()
-    }
-
-    fun dfs(start: String, list: List<String>) {
-        // println(list)
-        // println(hashMap)
-        // println()
-
-        var isEmpty = true
-        hashMap.forEach {
-            if(it.value.isNotEmpty()) {
-                isEmpty = false
+        Tickets.sortWith { x, y ->
+            if(x[0] == y[0]) {
+                x[1].compareTo(y[1])
+            } else {
+                x[0].compareTo(y[0])
             }
         }
 
-        if(isEmpty) {
-            result = list.toMutableList()
+        dfs("ICN", listOf<String>("ICN"), 0)
+
+
+        return result[0].toTypedArray()
+    }
+
+    fun dfs(start: String, routeList: List<String>, depth: Int) {
+        if(TicketSize == depth) {
+            result.add(routeList.toMutableList())
+
             return
         }
 
-        if(hashMap[start] == null) {
-            return
-        } else {
-            val end = hashMap[start]!!.removeFirst()
+        for(i in 0 until TicketSize) {
+            if(visited[i]) continue
 
-            dfs(end, list + listOf(end))
+            if(Tickets[i][0] == start) {
+                val end = Tickets[i][1]
+                visited[i] = true
+                dfs(end, routeList + listOf(end), depth + 1)
+                visited[i] = false
+            }
         }
 
     }
+
+
+
 }
