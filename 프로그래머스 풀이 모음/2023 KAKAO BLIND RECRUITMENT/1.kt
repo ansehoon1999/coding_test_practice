@@ -35,4 +35,4 @@ class Solution {
         val (yyyy, MM, dd) = yyyyMMdd.split(".").map { it.toInt() }
         return (yyyy * 12 + MM) * 28 + dd
     }
-}
+}ㅜ지
