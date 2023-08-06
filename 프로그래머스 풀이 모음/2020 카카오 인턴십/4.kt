@@ -52,3 +52,69 @@ class Solution {
     fun calc(cur_dir : Int, next_dir : Int) : Int = if (cur_dir == -1 || cur_dir == next_dir) 100 else 600
 }
 data class Dot(val x : Int, val y : Int, val dir : Int, val sum : Int)
+
+private lateinit var isVisited: Array<Array<Array<Boolean>>>
+private lateinit var map: Array<IntArray>
+
+private val dy = arrayOf(-1, 0, 1, 0)
+private val dx = arrayOf(0, 1, 0, -1)
+
+private var answer = Integer.MAX_VALUE
+private var R = 0
+private var C = 0
+
+data class Dot(val x: Int, val y: Int, val dir: Int, val sum: Int)
+
+//fun solution(board: Array<IntArray>): Int {
+//    map = board
+//    R = map.size
+//    C = map[0].size
+//
+//    isVisited = Array(4) { Array(R) { Array(C) { false } } }
+//    bfs(0, 0)
+//    return answer
+//}
+//
+//fun bfs(x: Int, y: Int) {
+//    val queue = LinkedList<Dot>()
+//
+//    queue.add(Dot(x, y, -1, 0))
+//
+//    isVisited[0][y][x] = true
+//    isVisited[1][y][x] = true
+//    isVisited[2][y][x] = true
+//    isVisited[3][y][x] = true
+//
+//    while(queue.isNotEmpty()) {
+//        val cur = queue.poll()
+//
+//        if(cur.x == C - 1 && cur.y == R - 1) {
+//            answer = min(answer, cur.sum)
+//        }
+//
+//        for(i in 0 until 4) {
+//            val nx = cur.x + dx[i]
+//            val ny = cur.y + dy[i]
+//
+//            if(nx < 0 || nx >= C || ny < 0 || ny >= R) {
+//                continue
+//            }
+//
+//            var newCost = 0
+//            if(cur.dir == -1 || cur.dir == i) {
+//                newCost = cur.sum + 100
+//            } else {
+//                newCost = cur.sum + 600
+//            }
+//
+//            if(newCost > map[ny][nx] && isVisited[i][ny][nx]) {
+//                continue
+//            }
+//
+//            queue.offer(Dot(nx, ny, i, newCost))
+//            isVisited[i][ny][nx] = true
+//            map[ny][nx] = newCost
+//        }
+//    }
+//}
+
