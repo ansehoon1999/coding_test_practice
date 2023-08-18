@@ -1,109 +1,71 @@
 class Solution {
-    lateinit var apacheList : IntArray
-    lateinit var lionList: IntArray
-    var arrowCount : Int = 0
-    lateinit var resultList: IntArray
 
-    var list = IntArray(11)
-    var size = 0
-    var max = -1000000000
+    private lateinit var visited: MutableList<Boolean>
+    private lateinit var hashMap: HashMap<Int, MutableList<Int>>
+    private lateinit var newInfo: IntArray
+    var max = -100000000
 
-    fun solution(n: Int, info: IntArray): IntArray {
 
-        apacheList = info
-        lionList = IntArray(11) { 0 }
-        arrowCount = n
-        resultList = intArrayOf()
+    fun solution(info: IntArray, edges: Array<IntArray>): Int {
 
-        backtracking(arrowCount, listOf(), 0)
+        newInfo = info
+        visited = MutableList<Boolean>(info.size) { false }
+        hashMap = hashMapOf()
 
-        if(resultList.isEmpty()) {
-            return intArrayOf(-1)
-        } else {
-            return resultList
+        for(i in 0 until info.size) {
+            hashMap[i] = mutableListOf()
         }
+
+        edges.forEach {
+            val start = it[0]
+            val end = it[1]
+
+            hashMap[start]!!.add(end)
+        }
+
+        visited[0] = true
+
+        println(hashMap)
+
+
+        dfs(0, 1, 0, hashMap[0]!!)
+
+
+        return max
     }
 
-    fun backtracking(arrowCount: Int, list: List<Int>, count: Int) {
-        if(count == 11) {
-            if(arrowCount == 0) {
-                decideTheAnswer(list)
+    fun dfs(curPoint: Int, sheepCount: Int, wolfCount: Int, curList: MutableList<Int>) {
 
-            }
-
+        if(sheepCount <= wolfCount) {
             return
         }
 
-        for(cnt in arrowCount downTo  0) {
-            backtracking(arrowCount - cnt, list + listOf(cnt), count + 1)
-        }
+        max = maxOf(max, sheepCount)
 
-    }
+        // println("curList: ${curList}")
+        // println("visited: ${visited}, sheep: ${sheepCount}, wolf: ${wolfCount}")
 
-    fun decideTheAnswer(list: List<Int>) {
+        for(i in 0 until curList.size) {
+            if(visited[curList[i]]) continue
 
-        lionList = list.toTypedArray().toIntArray()
-        apacheList = apacheList
-
-
-        var apacheCount = 0
-        var lionCount = 0
-
-        for(i in 0 until 11) {
-            val curApache = apacheList[i]
-            val curLion = lionList[i]
-
-            if(curApache == 0 && curLion == 0) {
-                continue
-            }
-
-            if(curApache < curLion) {
-                lionCount += 11 - i - 1
+            visited[curList[i]] = true
+            if(newInfo[curList[i]] == 0) {
+                val removePoint = curList[i]
+                val idx = curList.indexOf(removePoint)
+                curList.remove(removePoint)
+                dfs(removePoint, sheepCount+1, wolfCount, (curList + hashMap[removePoint]!!).toMutableList())
+                curList.add(idx, removePoint)
             } else {
-                apacheCount += 11 - i - 1
-            }
-        }
-
-
-
-        if(lionCount > apacheCount) {
-            if(max < lionCount - apacheCount) {
-                //            println("apacheList: ${apacheList.toList()}, apacheCount: ${apacheCount} / lionList: ${lionList.toList()}, lionCount: ${lionCount}")
-
-                max = lionCount - apacheCount
-                resultList = lionList
-            } else if(max == lionCount - apacheCount) {
-                //            println("apacheList: ${apacheList.toList()}, apacheCount: ${apacheCount} / lionList: ${lionList.toList()}, lionCount: ${lionCount}")
-
-                resultList = compareList(resultList, lionList)
-                //            println(resultList.toList())
+                val removePoint = curList[i]
+                val idx = curList.indexOf(removePoint)
+                curList.remove(removePoint)
+                dfs(removePoint, sheepCount, wolfCount+1, (curList + hashMap[removePoint]!!).toMutableList())
+                curList.add(idx, removePoint)
             }
 
+            visited[curList[i]] = false
         }
 
     }
-
-    fun compareList(resultList: IntArray, lionList: IntArray): IntArray {
-        var flag = 0
-
-        for(i in 10 downTo 0) {
-            if (resultList[i] == lionList[i]) {
-                continue
-            } else if (resultList[i] < lionList[i]) {
-                flag = 1
-                break
-            } else {
-                flag = 0
-                break
-            }
-        }
-
-        return if(flag == 0) {
-            resultList
-        } else {
-            lionList
-        }
-    }
-
 
 }
