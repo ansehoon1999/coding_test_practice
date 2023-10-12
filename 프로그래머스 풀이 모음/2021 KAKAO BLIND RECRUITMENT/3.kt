@@ -1,83 +1,78 @@
-import java.util.StringTokenizer
+fun solution(info: Array<String>, query: Array<String>): IntArray {
 
-class Solution {
+    val answer = IntArray(info.size)
 
-    var count = 0
+    val infoMap = mutableMapOf<String, ArrayList<Int>>()
 
-    fun solution(info: Array<String>, query: Array<String>): IntArray {
-
-        val answer = IntArray(query.size)
-
-        val infoMap = mutableMapOf<String, ArrayList<Int>>()
-
-        for(sen in info) {
-            val tk = StringTokenizer(sen)
-            val word = Array<Array<String>>(4) {
-                Array<String>(2) {
-                    "-"
-                }
-            }
-
-            for(i in 0 until 4) {
-                word[i][0] = tk.nextToken()
-            }
-
-            val score  = Integer.parseInt(tk.nextToken())
-            dfs(infoMap, word, score, "", 0)
+    info.forEach {
+        val infoList = it.split(" ")
+        val subList = Array<Array<String>>(4) {
+            Array<String>(2) { "-" }
         }
 
-        infoMap.forEach {
-            it.value.sort()
+        for (i in 0 until 4) {
+            subList[i][0] = infoList[i]
         }
 
-        for(i in query.indices) {
-            val tk = StringTokenizer(query[i])
-            var sentence = ""
+        val score = infoList[4].toInt()
 
-            for(j in 0 until 8) {
-                val str = tk.nextToken()
-                if(j % 2 == 0) {
-                    sentence += str
-                } else if(j == 7) {
-                    if(infoMap[sentence] == null) answer[i] = 0
-                    else {
-                        answer[i] = lower_bound(infoMap[sentence]!!, Integer.parseInt(str))
-                    }
-                }
-            }
-        }
-
-        return answer
+        makeCase(infoMap, subList, score, "", 0)
     }
 
-    fun dfs(infoMap: MutableMap<String, ArrayList<Int>>, word: Array<Array<String>>, score: Int, sentence: String, cnt: Int) {
-        if(cnt == 4) {
-            count++
-            if(infoMap[sentence] == null) {
-                infoMap.put(sentence, ArrayList<Int>())
-            }
-            infoMap[sentence]?.add(score)
-            return
-        }
-
-        dfs(infoMap, word, score, sentence + word[cnt][0], cnt + 1 )
-        dfs(infoMap, word, score, sentence + word[cnt][1], cnt + 1)
+    infoMap.forEach {
+        it.value.sort()
     }
 
-    fun lower_bound(arrNum: ArrayList<Int>, score: Int): Int {
-        var low = 0
-        var high = arrNum.size - 1
+    for(i in query.indices) {
+        val queryList = query[i].split(" ")
+        var sentence = ""
 
-        while(low <= high) {
-            var mid = (low + high) / 2
-
-            if(arrNum[mid] < score) {
-                low = mid + 1
-            } else {
-                high = mid - 1
+        for(j in queryList.indices) {
+            if(j % 2 == 0) {
+                sentence += queryList[j]
+            } else if(j == 7) {
+                if(infoMap[sentence] == null) answer[i] = 0
+                else answer[i] = lowerBound(infoMap[sentence]!!, queryList[7].toInt())
             }
         }
 
-        return arrNum.size - low
     }
+
+    return answer
 }
+
+fun makeCase(infoMap: MutableMap<String, ArrayList<Int>>, subList: Array<Array<String>>, score: Int, sentence: String, cnt: Int) {
+
+    if (cnt == 4) {
+
+        if(infoMap[sentence] == null) {
+            infoMap[sentence] = arrayListOf()
+        }
+
+        infoMap[sentence]?.add(score)
+
+        return
+    }
+
+    makeCase(infoMap, subList, score, sentence + subList[cnt][0], cnt + 1)
+    makeCase(infoMap, subList, score, sentence + subList[cnt][1], cnt + 1)
+
+}
+
+fun lowerBound(infoMapList: ArrayList<Int>, score: Int): Int {
+
+    var low = 0
+    var high = infoMapList.size - 1
+
+    while(low <= high) {
+        val mid = (low + high) / 2
+        if(infoMapList[mid] < score) {
+            low = mid + 1
+        } else {
+            high = mid - 1
+        }
+    }
+
+    return infoMapList.size - low
+}
+
