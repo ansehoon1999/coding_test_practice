@@ -18,5 +18,5 @@ class Solution {
         if(arrList.isEmpty()) return intArrayOf(-1)
         else return arrList.toIntArray()
 
-    }
+    
 }
