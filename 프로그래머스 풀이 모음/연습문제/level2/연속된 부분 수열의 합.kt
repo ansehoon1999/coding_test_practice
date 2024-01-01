@@ -1,43 +1,33 @@
 class Solution {
+
     fun solution(sequence: IntArray, k: Int): IntArray {
+        var answer: IntArray = intArrayOf(0, sequence.size)
+
         var start = 0
         var end = 0
+        var sum = sequence[start]
 
-        val list = mutableListOf<Pair<Int, Int>>()
+        while(start < sequence.size && end < sequence.size && start <= end) {
+            if(sum == k) {
 
-        var sum = if(start == end) sequence[start] else sequence[start] + sequence[end]
+                if(answer[1] - answer[0] > end - start) {
+                    answer[0] = start
+                    answer[1] = end
+                }
 
-        while(true) {
-            if(end >= sequence.size || start >= sequence.size) break
-
-            if(sum > k) {
-                if(start >= sequence.size) break
-                sum -= sequence[start]
-                start ++
+                end ++
+                if(end == sequence.size) continue
+                sum += sequence[end]
             } else if(sum < k) {
                 end ++
-                if(end >= sequence.size) break
-
+                if(end == sequence.size) continue
                 sum += sequence[end]
-
-            } else if(sum == k) {
-                list.add(Pair(start, end))
-                if(start >= sequence.size) break
+            } else if(sum > k) {
                 sum -= sequence[start]
-                start ++
+                start++
             }
         }
 
-        var min = Integer.MAX_VALUE
-        var pair = Pair(0, 0)
-
-        list.forEach {
-            if(min > it.second - it.first) {
-                min = it.second - it.first
-                pair = it
-            }
-        }
-
-        return intArrayOf(pair.first, pair.second)
+        return answer
     }
 }
