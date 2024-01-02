@@ -2,78 +2,77 @@ import java.util.*
 
 class Solution {
 
-    private lateinit var visited: MutableList<MutableList<Int>>
+    lateinit var visited: MutableList<MutableList<Boolean>>
 
-    val dr = listOf(-1, 1, 0, 0)
-    val dc = listOf(0, 0, -1, 1)
+    val dr = listOf(1, -1, 0, 0)
+    val dc = listOf(0, 0, 1, -1)
 
     fun solution(board: Array<String>): Int {
         var answer: Int = 0
 
-        var startPoint = Pair(0, 0)
-        var endPoint = Pair(0, 0)
+        var startR = 0
+        var startC = 0
 
-        val rowLen = board.size
-        val colLen = board[0].length
-
-        visited = MutableList<MutableList<Int>>(rowLen) {
-            MutableList<Int>(colLen) { 0 }
+        visited = MutableList<MutableList<Boolean>>(board.size) {
+            MutableList<Boolean>(board[0].length) { false }
         }
 
-        for(row in 0 until rowLen) {
-            val rowList = board[row].toList()
-            for(col in 0 until colLen) {
-                if(rowList[col] == 'R') {
-                    startPoint = Pair(row, col)
-                } else if(rowList[col] == 'G') {
-                    endPoint = Pair(row, col)
+        for(i in 0 until board.size) {
+            val boardList = board[i].toList()
+            for(j in 0 until boardList.size) {
+                if(boardList[j] == 'D') {
+                    visited[i][j] = true
+                }
+
+                if(boardList[j] == 'R') {
+                    startR = i
+                    startC = j
                 }
             }
         }
 
-        println(endPoint)
-
-        visited[startPoint.first][startPoint.second] = 1
-        val deque = ArrayDeque<Pair<Int, Int>>()
-        deque.add(startPoint)
-
-        var count = 0
+        val deque = ArrayDeque<Triple<Int, Int, Int>>()
+        deque.add(Triple(startR, startC, 0))
 
         while(deque.isNotEmpty()) {
-            val curPoint = deque.poll()
+            val cur = deque.removeFirst()
+            val curR = cur.first
+            val curC = cur.second
+            val curCnt = cur.third
 
-            if(curPoint.first == endPoint.first && curPoint.second == endPoint.second) {
-                return visited[curPoint.first][curPoint.second] - 1
+            if(board[curR][curC] == 'G') {
+
+                return curCnt
             }
 
-            for(idx in 0 until 4) {
+            visited[curR][curC] = true
 
-                var nr = curPoint.first
-                var nc = curPoint.second
+            for(i in 0 until 4) {
+                var newR = curR + dr[i]
+                var newC = curC + dc[i]
 
-                while(true) {
-                    nr = nr + dr[idx]
-                    nc = nc + dc[idx]
+                if(newR < 0 || newR >= board.size || newC < 0 || newC >= board[0].length) continue
 
-                    if(nr in 0 .. rowLen-1 && nc in 0 .. colLen-1 && board[nr][nc] == 'D') {
-                        nr = nr - dr[idx]
-                        nc = nc - dc[idx]
-                        break
-                    }
+                while((newR in 0 .. board.size - 1) && (newC in 0 .. board[0].length - 1) && board[newR][newC] != 'D') {
+                    // println("new ${newR}, ${newC} ${visited[newR][newC]}")
+                    newR = newR + dr[i]
+                    newC = newC + dc[i]
 
-                    if(nr < 0 || nr >= rowLen || nc < 0 || nc >= colLen) {
-                        nr = nr - dr[idx]
-                        nc = nc - dc[idx]
-                        break
-                    }
                 }
 
-                if(visited[nr][nc] == 0) {
-                    visited[nr][nc] = visited[curPoint.first][curPoint.second] + 1
-                    deque.add(Pair(nr, nc))
+                newR = newR - dr[i]
+                newC = newC - dc[i]
+
+
+                if(!visited[newR][newC]) {
+                    deque.add(Triple(newR, newC, curCnt + 1))
                 }
+
+
             }
+
         }
+
 
 
         return -1
