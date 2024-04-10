@@ -1,47 +1,53 @@
+import kotlin.collections.ArrayDeque
 import java.util.*
 
 class Solution {
-
-    val deque = ArrayDeque<Char>()
-
     fun solution(s: String): Int {
         var answer: Int = 0
-
-        s.forEach {
-            deque.add(it)
+        
+        val deque = ArrayDeque<Char>()
+        s.forEach { sChar ->
+            deque.add(sChar)
         }
-
-        repeat(s.length) {
-
-            if(rotate()) answer ++
-
-            val first = deque.pop()
-            deque.add(first)
-        }
-
+        
+        repeat(s.length) {  
+            
+            if(isAlright(deque)) {
+                answer ++
+            } 
+            
+            val first = deque.first()
+            deque.addLast(first)
+            deque.removeFirst()
+            
+        } 
+        
+        
         return answer
+        
     }
-
-    fun rotate() : Boolean {
+    
+    fun isAlright(deque: ArrayDeque<Char>): Boolean {
         val stk = Stack<Char>()
-
-        deque.forEach { cur ->
+                
+        deque.forEach { ch ->
+            
             if(stk.isEmpty()) {
-                stk.add(cur)
+               stk.add(ch) 
             } else {
-                if(cur == ']' && stk.last() == '[') {
+                if(stk.last() == '[' && ch == ']') { 
                     stk.pop()
-                } else if(cur == ')' && stk.last() == '(') {
+                } else if(stk.last() == '(' && ch == ')') {
                     stk.pop()
-                } else if(cur == '}' && stk.last() == '{') {
+                } else if(stk.last() == '{' && ch == '}') {
                     stk.pop()
                 } else {
-                    stk.add(cur)
+                    stk.add(ch)
                 }
+            
             }
-
         }
-
+        
         return stk.isEmpty()
     }
 }
