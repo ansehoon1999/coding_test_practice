@@ -1,30 +1,32 @@
 class Solution {
     fun solution(elements: IntArray): Int {
-        var answer: Int = 0
-
-        val elementSet = mutableSetOf<Int>()
-
-        var len = 1
-        while(len <= elements.size) {
-
-            var startPoint = 0
-            while(startPoint <= (elements.size)) {
-                var sum = 0
-
-                for(point in startPoint until startPoint + len) {
-                    sum += elements[point % elements.size]
+        var answerSet = mutableSetOf<Int>()
+        
+        val elementList = elements.toList()
+        val totalElements = elementList + elementList
+        
+        for(size in 1 .. elements.size) {
+            
+            var startIdx = 0
+            while(true) {
+                
+                if(startIdx >= elements.size) {
+                    break
                 }
-
-                elementSet.add(sum)
-
-                startPoint ++
+                
+                var totalCnt = 0
+                for(idx in startIdx until startIdx + size) {
+                    totalCnt += totalElements[idx]
+                }
+                
+                answerSet.add(totalCnt)
+                startIdx ++
+                // println(totalCnt)
             }
-
-            len ++
-
+            
         }
-
-
-        return elementSet.size
+        
+        
+        return answerSet.size
     }
 }
