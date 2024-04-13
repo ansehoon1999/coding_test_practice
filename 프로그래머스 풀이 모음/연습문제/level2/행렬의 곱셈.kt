@@ -1,29 +1,56 @@
 class Solution {
+    
+    
+    
     fun solution(arr1: Array<IntArray>, arr2: Array<IntArray>): Array<IntArray> {
-
-        val arr1ColSize = arr1.size
-        val arr1RowSize = arr1[0].size
-
-        val arr2ColSize = arr2.size
-        val arr2RowSize = arr2[0].size
-
-        var answer = Array<IntArray>(arr1ColSize) {
-            IntArray(arr2RowSize) { 0 }
+        
+        val arr1Col = arr1.size
+        val arr1Row = arr1[0].size
+        
+        val arr2Col = arr2.size
+        val arr2Row = arr2[0].size
+        
+        val answer = MutableList(arr1Col) {
+            IntArray(arr2Row)
         }
 
-        for(arr1Col in 0 until arr1ColSize) {
-            for(arr2Row in 0 until arr2RowSize) {
-
-                var total = 0
-
-                for(k in 0 until arr1RowSize) {
-                    total += (arr1[arr1Col][k] * arr2[k][arr2Row])
+        for(arr1Idx in 0 until arr1Col) {
+            
+            val curArr1 = arr1[arr1Idx]
+            
+            for(arr2RowIdx in 0 until arr2Row) {
+        
+                val arr2List = mutableListOf<Int>()
+                
+                for(arr2ColIdx in 0 until arr2Col) {
+                    
+                    arr2List.add(arr2[arr2ColIdx][arr2RowIdx])
                 }
-
-                answer[arr1Col][arr2Row] = total
+                
+                // println(arr2List)
+                val curArr2 = arr2List
+                
+                calculateAnswer(answer, curArr1, curArr2, arr1Idx, arr2RowIdx)
             }
         }
-
-        return answer
+        
+    
+        return answer.toTypedArray()
+    }
+    
+    fun calculateAnswer(answer: MutableList<IntArray>, curArr1: IntArray, curArr2: MutableList<Int>, arr1Idx: Int, arr2Idx: Int) {
+        var result = 0
+        
+        val size = curArr1.size
+        
+        for(idx in 0 until size) {
+            val curArr1Ele = curArr1[idx]
+            val curArr2Ele = curArr2[idx]
+            
+            result += (curArr1Ele * curArr2Ele)
+        }
+        
+        answer[arr1Idx][arr2Idx] = result
+        
     }
 }
