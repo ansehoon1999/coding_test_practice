@@ -1,0 +1,24 @@
+class Solution {
+    
+    val hashMap = hashMapOf<String, MutableList<String>>()
+    
+    fun solution(clothes: Array<Array<String>>): Int {
+        var answer = 1
+        
+        clothes.forEach { cloth ->
+            val (detail, type) = cloth
+            
+            if(hashMap[type] == null) {
+                hashMap[type] = mutableListOf<String>(detail)
+            } else{
+               hashMap[type]!!.add(detail)
+            }
+        }
+        
+        for((key, value) in hashMap) {
+            answer *= (value.size + 1)
+        }        
+        
+        return answer - 1
+    }
+}
