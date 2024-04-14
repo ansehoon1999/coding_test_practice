@@ -1,0 +1,43 @@
+class Solution {
+    fun solution(progresses: IntArray, speeds: IntArray): IntArray {
+        var answer = mutableListOf<Int>()
+        
+        
+        val size = progresses.size
+        val remainDayList = mutableListOf<Int>()
+        
+        for(idx in 0 until size) {
+            val remainProgress = 100 - progresses[idx]
+            val speed = speeds[idx]
+            
+            val remainDay = remainProgress / speed
+            val remainElse = remainProgress % speed
+            
+            if(remainElse == 0) {
+                remainDayList.add(remainDay)
+            } else {
+                remainDayList.add(remainDay + 1)
+            }
+        }
+        
+        
+        var curValue = remainDayList[0]
+        var curCnt = 0
+        
+        for(idx in 0 until remainDayList.size) {
+            
+            if(curValue >= remainDayList[idx]) {
+                curCnt ++
+            } else {
+                answer.add(curCnt)
+                curValue = remainDayList[idx]
+                curCnt = 1
+            }
+            
+        }
+        
+        answer.add(curCnt)
+
+        return answer.toIntArray()
+    }
+}
