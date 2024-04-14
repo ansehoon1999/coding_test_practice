@@ -1,43 +1,40 @@
 import java.util.*
 
 class Solution {
-
-    val deque = ArrayDeque<Pair<Int, Int>>()
-
+    
     fun solution(priorities: IntArray, location: Int): Int {
         var answer = 0
-
+    
+        val deque = ArrayDeque<Pair<Int, Int>>()
+        
         priorities.forEachIndexed { idx, priority ->
             deque.add(Pair(idx, priority))
         }
+        
 
-        println(deque)
-        var cnt = 0
+        while(true) {
+            val (curIdx, curPriority) = deque.removeFirst()
 
-        while(deque.isNotEmpty()) {
-
-            val cur = deque.poll()
-
-            val maxPair = deque.maxByOrNull { it.second }
-
-            if(maxPair == null) {
-                return cnt + 1
+            var flag = false
+            
+            deque.forEach { 
+                if(curPriority < it.second) {
+                    flag = true
+                 }
             }
-
-            if(cur.second < maxPair.second) {
-                deque.add(cur)
-            } else {
-
-                cnt ++
-
-                if(cur.first == location) {
-                    break
-                }
-            }
-
+              
+             if(flag) {
+                 deque.add(Pair(curIdx, curPriority))
+             } else {
+                 answer ++ 
+                 if(curIdx == location) return answer
+             }
+             
+             
+             
+             
         }
-
-
-        return cnt
+        
+        return answer - 1 
     }
 }
