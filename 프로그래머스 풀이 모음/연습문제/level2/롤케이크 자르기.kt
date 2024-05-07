@@ -1,27 +1,31 @@
 class Solution {
     fun solution(topping: IntArray): Int {
         var answer: Int = 0
-
-        val arr1 = IntArray(topping.size) { 0 }
-        val arr2 = IntArray(topping.size) { 0 }
-        var menuCount = mutableSetOf<Int>()
-
-        for(i in 0 .. topping.size - 1) {
-            menuCount.add(topping[i])
-            arr1[i] = menuCount.size
+        
+        val toppingSet = mutableSetOf<Int>()
+        
+        val left = IntArray(topping.size)
+        val right = IntArray(topping.size)
+        
+        for(i in 0 until topping.size) {
+            toppingSet.add(topping[i])
+            left[i] = toppingSet.size
         }
-
-        menuCount.clear()
-
+        
+        toppingSet.clear()
+        
         for(i in topping.size - 1 downTo 0) {
-            menuCount.add(topping[i])
-            arr2[i] = menuCount.size
+            toppingSet.add(topping[i])
+            right[i] = toppingSet.size
         }
-
-        for(i in 0 until topping.size - 1) {
-            if(arr1[i] == arr2[i+1]) answer ++
+        
+        
+        for(i in 0 until left.size - 1) {
+            if(left[i] == right[i+1]) {
+                answer ++
+            }
         }
-
+        
         return answer
     }
 }
