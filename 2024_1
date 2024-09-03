@@ -1,0 +1,39 @@
+class Solution {
+    
+    val numSet = setOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
+    
+    fun solution(s: String): String {
+        var answer = s[0].toString()
+        if(numSet.contains(answer)) {
+            
+        } else {
+            answer = answer.toUpperCase()
+        }
+        
+        for(idx in 1 until s.length) {
+            var curChar = s[idx].toString()
+            val befChar = s[idx-1].toString()
+            
+            if(befChar == " ") {
+                if(!numSet.contains(curChar)) {
+                    curChar = curChar.toUpperCase()
+                } else {
+                    curChar = curChar.toLowerCase()
+                }
+            } else  {
+                if(!numSet.contains(curChar)) {
+                    
+                } 
+                curChar = curChar.toLowerCase()
+            
+            }
+            
+            answer += curChar
+            
+            
+        }
+        
+        
+        return answer
+    }
+}
