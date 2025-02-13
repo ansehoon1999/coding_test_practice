@@ -1,74 +1,61 @@
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.PriorityQueue
 import java.util.Stack
+import java.util.StringTokenizer
 
-data class Node(
-    val to: Int,
-    val cost: Long
-)
 
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val writer = System.out.bufferedWriter()
 
-    /**
-     * 1. Stack
-     */
-
-
+    val n = br.readLine().toInt()
 
     val stk = Stack<Int>()
 
-    var tmpNum = 1
+    val nList = mutableListOf<Int>()
 
-    val n = br.readLine().toInt()
-    val inputList = mutableListOf<Int>()
     repeat(n) {
-        val input = br.readLine().toInt()
-        inputList.add(input)
+        val tmp = br.readLine().toInt()
+        nList.add(tmp)
     }
 
-    val opList = mutableListOf<String>()
+    var cnt = 1
 
-    inputList.forEach { num ->
+    val sb = StringBuilder()
 
-//        println("opList: ${opList}")
-//        println("stk: ${stk}")
+    nList.forEach { num ->
 
-        if(tmpNum <= num) {
-
-            while(stk.isEmpty() || tmpNum <= num) {
-
-                stk.add(tmpNum)
-                opList.add("+")
-                tmpNum ++
+        if(cnt <= num) {
+            while(cnt <= num) {
+                sb.append("+\n")
+                stk.add(cnt)
+                cnt ++
             }
-
             stk.pop()
-            opList.add("-")
-        } else {
-
-            if(stk.isNotEmpty() && stk.last() == num) {
+            sb.append("-\n")
+        } else { // 5 > 3
+            if(stk.last() == num) {
                 stk.pop()
-                opList.add("-")
+                sb.append("-\n")
             }
         }
-
     }
-
 
     if(stk.isEmpty()) {
-        opList.forEach {
-            println(it)
-        }
-    } else {
+        println(sb.toString())
+    } else{
         println("NO")
     }
 
 
-
-    writer.flush()
-    writer.close()
 }
+
+
+
+
+
+
+
+
+
 
