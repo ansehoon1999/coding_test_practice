@@ -39,7 +39,7 @@ fun main() {
 
     for(i in 1 .. n) {
         for(j in 1 .. n) {
-            print("${dp[i][j]} ")
+            print("${if(dp[i][j] == Long.MAX_VALUE / 2) 0 else dp[i][j]} ")
         }
         println()
     }
